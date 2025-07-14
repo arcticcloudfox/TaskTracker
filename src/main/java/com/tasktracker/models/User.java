@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
+    //puts user details into database and retrieves the information
     @Id
     @GeneratedValue
     private int id;

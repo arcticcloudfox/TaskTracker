@@ -1,37 +1,59 @@
 package com.tasktracker.security;
 
-import com.tasktracker.service.AppUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import com.tasktracker.security.AppUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private UserDetailsService userDetailsService;
+    private final AppUserDetailsService appUserDetailsService;
 
-    @Bean
-    public UserDetailsService getUserDetailsService() {
-        return new AppUserDetailsService();
-    }
+   public SecurityConfig(AppUserDetailsService appUserDetailsService) {
+       this.appUserDetailsService = appUserDetailsService;
+   }
+
+   @Bean
+   public UserDetailsService userDetailsService() {
+       return appUserDetailsService;
+   }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    public SecurityConfig(AppUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
     }
 
-    //Figure out why these methods are not working.
-    //Continue with security config.
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+       http.csrf(AbstractHttpConfigurer::disable)
+               .authorizeHttpRequests(authorize -> authorize
+                       .requestMatchers("/tasks/**").authenticated()
+                       .requestMatchers("/signin").permitAll()
+                       .requestMatchers("/signup").permitAll()
+                       .anyRequest().authenticated()
+               )
+               .formLogin(form -> form
+                       .loginPage("/signin")
+                       .loginProcessingUrl("/login")
+               ).logout(logout -> logout.logoutSuccessUrl("/signin"));
+
+       return http.build();
+    }
 
 }

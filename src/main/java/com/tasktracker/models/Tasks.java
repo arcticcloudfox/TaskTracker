@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 public class Tasks {
 
+    //these are values that save to the database and allows for the application to retrieve them
     @Id
     @GeneratedValue
     private int id;

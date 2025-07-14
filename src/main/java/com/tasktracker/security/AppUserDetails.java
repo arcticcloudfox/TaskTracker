@@ -2,14 +2,15 @@ package com.tasktracker.security;
 
 import com.tasktracker.models.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
+public class AppUserDetails implements UserDetails {
 
     private User user;
 
-    public UserDetails(User user) {
+    public AppUserDetails(User user) {
         this.user = user;
     }
 
