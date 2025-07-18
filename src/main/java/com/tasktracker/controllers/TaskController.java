@@ -1,14 +1,10 @@
 package com.tasktracker.controllers;
 
 
-import com.tasktracker.models.Tasks;
-import com.tasktracker.models.data.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tasktracker.models.Task;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -16,6 +12,11 @@ public class TaskController {
 
     //redo this to better fit the creation of the task services files
     //also to better fit the templates
+
+    @GetMapping("/task/{id}")
+    public String getTaskById(@PathVariable int id, Model model) {
+        Task task = (Task) taskService.findTaskById(id);
+    }
 
 
 
