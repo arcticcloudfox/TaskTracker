@@ -2,9 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Task Tracker</title>
+
 </head>
 <body>
+
+<div class="container body-content">
+    <h2> Task Tracker </h2>
+    <ul>
+        <li th:each="task : ${tasks}">
+            <a th:href="@{'/view/' + ${task.id}}" th:text="${task.taskName}"></a>
+        </li>
+    </ul>
+</div>
 
 </body>
 </html>
