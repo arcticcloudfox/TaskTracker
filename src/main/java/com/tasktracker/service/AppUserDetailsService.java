@@ -1,7 +1,8 @@
-package com.tasktracker.security;
+package com.tasktracker.service;
 
 import com.tasktracker.models.User;
 import com.tasktracker.models.data.UserRepository;
+import com.tasktracker.security.AppUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

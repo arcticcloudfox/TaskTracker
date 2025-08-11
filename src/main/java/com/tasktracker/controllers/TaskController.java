@@ -3,9 +3,9 @@ package com.tasktracker.controllers;
 
 import com.tasktracker.models.Task;
 import com.tasktracker.models.User;
+import com.tasktracker.models.data.TaskRepository;
 import com.tasktracker.models.data.UserRepository;
 import com.tasktracker.security.SecurityConfig;
-import com.tasktracker.service.TaskServiceMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -23,20 +23,15 @@ import java.util.List;
 public class TaskController {
 
     @Autowired
-     private TaskServiceMethods taskService;
+    private TaskRepository taskRepository;
 
     @Autowired
      private UserRepository userRepository;
 
-    public TaskController(TaskServiceMethods taskService) {
-
-        this.taskService = taskService;
-    }
-
     //retrieves tasks by id
     @GetMapping("/tasks/{id}")
     public String getTaskById(@PathVariable int id, Model model) {
-        Task task = (Task) taskService.findTaskById(id);
+        Task task = (Task) taskRepository.findTaskById(id);
         model.addAttribute("task", task);
         return "details";
     }
@@ -51,7 +46,7 @@ public class TaskController {
     //gets tasks by specific user
     @GetMapping
     public String getAllTasksByUser(Model model) {
-        List<Task> tasks = taskService.getTasksByUser();
+        List<Task> tasks = taskRepository.getTasksByUser();
         model.addAttribute("tasks", tasks);
         return "tasks";
     }
@@ -69,7 +64,7 @@ public class TaskController {
 
         task.setUser(user);
 
-        taskService.saveTask(task);
+        taskRepository.saveTask(task);
 
         return "redirect:/" + task.getId();
     }
@@ -77,25 +72,25 @@ public class TaskController {
     //allows user to update existing tasks
     @PostMapping("/task/update/{id}")
     public String updateTask(@PathVariable int id, @ModelAttribute("task") Task taskDetails) {
-        Task task = (Task) taskService.findTaskById(id);
+        Task task = (Task) taskRepository.findTaskById(id);
         task.setTaskName(taskDetails.getTaskName());
         task.setDescription(taskDetails.getDescription());
         task.setCompleted(taskDetails.isCompleted());
-        taskService.saveTask(task);
+        taskRepository.saveTask(task);
         return "redirect:/";
     }
 
     //allows user to delete tasks by their id
     @PostMapping("/task/{id}/delete")
     public String deleteTask(@PathVariable int id) {
-        taskService.deleteTask(id);
+        taskRepository.deleteTask(id);
         return "redirect:/";
     }
 
     //shows the edit task form
     @GetMapping("task/{id}/edit")
     public String showEditForm(@PathVariable int id, Model model) {
-        Task task = (Task) taskService.findTaskById(id);
+        Task task = (Task) taskRepository.findTaskById(id);
         model.addAttribute("task", task);
         return "edit";
     }
