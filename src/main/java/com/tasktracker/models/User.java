@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.scheduling.config.Task;
-
+import com.tasktracker.models.Task;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +23,9 @@ public class User {
     private String username;
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
+
     public String getUsername() {
         return username;
     }
@@ -31,4 +33,6 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+
 }

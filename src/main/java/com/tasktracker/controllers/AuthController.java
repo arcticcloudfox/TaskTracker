@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.RowSet;
+
 @Controller
 public class AuthController {
 
@@ -23,14 +25,15 @@ public class AuthController {
             return "redirect:/signup?error=passwordDidNotMatch";
         }
 
-        if (userRepository.isUsernameTaken(user.getUsername())) {
+
+        if (userRepository.existsByUsername(user.getUsername())) {
             return "redirect:/signup?error=usernameNotAvailable";
         }
 
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
-        userRepository.saveUser(user);
+        userRepository.save(user);
 
         return "redirect:/login";
     }
@@ -48,7 +51,7 @@ public class AuthController {
 
     @DeleteMapping("/delete/{userId}")
     public void deleteUser(@PathVariable int userId) {
-        userRepository.deleteUser(userId);
+        userRepository.deleteById(userId);
     }
 
 }

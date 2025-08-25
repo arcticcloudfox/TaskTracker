@@ -46,7 +46,11 @@ public class TaskController {
     //gets tasks by specific user
     @GetMapping
     public String getAllTasksByUser(Model model) {
-        List<Task> tasks = taskRepository.getTasksByUser();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        List<Task> tasks = taskRepository.findByUser(user);
         model.addAttribute("tasks", tasks);
         return "tasks";
     }
@@ -64,7 +68,7 @@ public class TaskController {
 
         task.setUser(user);
 
-        taskRepository.saveTask(task);
+        taskRepository.save(task);
 
         return "redirect:/" + task.getId();
     }
@@ -76,14 +80,14 @@ public class TaskController {
         task.setTaskName(taskDetails.getTaskName());
         task.setDescription(taskDetails.getDescription());
         task.setCompleted(taskDetails.isCompleted());
-        taskRepository.saveTask(task);
+        taskRepository.save(task);
         return "redirect:/";
     }
 
     //allows user to delete tasks by their id
     @PostMapping("/task/{id}/delete")
     public String deleteTask(@PathVariable int id) {
-        taskRepository.deleteTask(id);
+        taskRepository.deleteById(id);
         return "redirect:/";
     }
 
