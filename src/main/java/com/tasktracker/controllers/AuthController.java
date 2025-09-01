@@ -41,12 +41,13 @@ public class AuthController {
     @GetMapping("/signup")
     public String registerUser(Model model) {
         model.addAttribute("title", "register");
-        return "signup";
+        return "User/signup";
     }
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login";
+        System.out.println("login page works!");
+        return "User/login";
     }
 
     @DeleteMapping("/delete/{userId}")

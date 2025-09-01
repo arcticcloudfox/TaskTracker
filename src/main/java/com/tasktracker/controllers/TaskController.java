@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/task")
 public class TaskController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class TaskController {
      private UserRepository userRepository;
 
     //retrieves tasks by id
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/{id}")
     public String getTaskById(@PathVariable int id, Model model) {
         Task task = (Task) taskRepository.findTaskById(id);
         model.addAttribute("task", task);
@@ -37,26 +37,26 @@ public class TaskController {
     }
 
     //shows the form to add a task
-    @GetMapping("/tasks/add")
+    @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("task", new Task());
         return "add";
     }
 
     //gets tasks by specific user
-    @GetMapping
+    @GetMapping("")
     public String getAllTasksByUser(Model model) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        List<Task> tasks = taskRepository.findByUser(user);
-        model.addAttribute("tasks", tasks);
-        return "tasks";
+        List<Task> task = taskRepository.findByUser(user);
+        model.addAttribute("task", task);
+        return "task";
     }
 
     //enables user to add a task
-    @PostMapping
+    @PostMapping("")
     public String addTask(@ModelAttribute Task task) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -74,7 +74,7 @@ public class TaskController {
     }
 
     //allows user to update existing tasks
-    @PostMapping("/task/update/{id}")
+    @PostMapping("/update/{id}")
     public String updateTask(@PathVariable int id, @ModelAttribute("task") Task taskDetails) {
         Task task = (Task) taskRepository.findTaskById(id);
         task.setTaskName(taskDetails.getTaskName());
@@ -85,14 +85,14 @@ public class TaskController {
     }
 
     //allows user to delete tasks by their id
-    @PostMapping("/task/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteTask(@PathVariable int id) {
         taskRepository.deleteById(id);
         return "redirect:/";
     }
 
     //shows the edit task form
-    @GetMapping("task/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable int id, Model model) {
         Task task = (Task) taskRepository.findTaskById(id);
         model.addAttribute("task", task);

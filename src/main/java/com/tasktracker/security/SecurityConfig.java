@@ -40,18 +40,23 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
        http.csrf(AbstractHttpConfigurer::disable)
                .authorizeHttpRequests(authorize -> authorize
-                       .requestMatchers("/tasks/**").authenticated()
-                       .requestMatchers("/signin").permitAll()
-                       .requestMatchers("/signup").permitAll()
+                       .requestMatchers("/task/**").authenticated()
+                       .requestMatchers("/login", "/signup", "/error", "/css/**").permitAll()
                        .anyRequest().authenticated()
                )
                .formLogin(form -> form
-                       .loginPage("/signin")
-                       .loginProcessingUrl("/login")
-               ).logout(logout -> logout.logoutSuccessUrl("/signin"));
+                       .loginPage("/login")
+                       .loginProcessingUrl("/loginUser")
+                       .defaultSuccessUrl("/task", true)
+                       .defaultSuccessUrl("/login?error=true")
+                       .permitAll()
+
+               ).logout(logout -> logout.logoutSuccessUrl("/login")
+                       .permitAll());
 
        return http.build();
     }
