@@ -52,7 +52,6 @@ public class SecurityConfig {
                        .loginPage("/login")
                        .loginProcessingUrl("/loginUser")
                        .defaultSuccessUrl("/task", true)
-                       .defaultSuccessUrl("/login?error=true")
                        .permitAll()
 
                ).logout(logout -> logout.logoutSuccessUrl("/login")

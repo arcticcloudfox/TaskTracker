@@ -24,15 +24,4 @@ public class Task {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public void setUser(User user) {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public int getId() {
-        return id;
-    }
-
 }

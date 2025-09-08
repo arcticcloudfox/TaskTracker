@@ -33,7 +33,7 @@ public class TaskController {
     public String getTaskById(@PathVariable int id, Model model) {
         Task task = (Task) taskRepository.findTaskById(id);
         model.addAttribute("task", task);
-        return "details";
+        return "view";
     }
 
     //shows the form to add a task
@@ -50,13 +50,13 @@ public class TaskController {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        List<Task> task = taskRepository.findByUser(user);
-        model.addAttribute("task", task);
-        return "task";
+        List<Task> tasks = taskRepository.findByUser(user);
+        model.addAttribute("tasks", tasks);
+        return "index";
     }
 
     //enables user to add a task
-    @PostMapping("")
+    @PostMapping("/add")
     public String addTask(@ModelAttribute Task task) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
@@ -68,9 +68,11 @@ public class TaskController {
 
         task.setUser(user);
 
+        System.out.println("Task saved: " + task.getTaskName() + ", user: " + user.getUsername());
+
         taskRepository.save(task);
 
-        return "redirect:/" + task.getId();
+        return "view";
     }
 
     //allows user to update existing tasks
@@ -81,14 +83,14 @@ public class TaskController {
         task.setDescription(taskDetails.getDescription());
         task.setCompleted(taskDetails.isCompleted());
         taskRepository.save(task);
-        return "redirect:/";
+        return "redirect:/task";
     }
 
     //allows user to delete tasks by their id
     @PostMapping("/{id}/delete")
     public String deleteTask(@PathVariable int id) {
         taskRepository.deleteById(id);
-        return "redirect:/";
+        return "redirect:/task";
     }
 
     //shows the edit task form
@@ -101,9 +103,7 @@ public class TaskController {
 
     private User getCurrentUser() {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        User user = new User();
-        user.setUsername(username);
-        return user;
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
 }

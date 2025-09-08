@@ -8,13 +8,38 @@
 </head>
 <body>
 
-<div class="container body-content">
+<div class="container mt-4">
     <h2> Task Tracker </h2>
-    <ul>
-        <li th:each="task : ${tasks}">
-            <a th:href="@{'/view/' + ${task.id}}" th:text="${task.taskName}"></a>
-        </li>
-    </ul>
+
+    <a th:href="@{/task/add}" class="btn btn-primary mb-3">Add Task</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Completed</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.taskName}">Task Name</td>
+            <td th:text="${task.description}">Description</td>
+            <td>
+                <input type="checkbox" th:checked="${task.completed}" disabled />
+            </td>
+            <td>
+                <a th:href="@{'/task/' + ${task.id} + '/edit'}" class="btn btn-sm btn-warning">Edit</a>
+                <form th:action="@{'/task/' +${task.id} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this task?');">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
 </div>
 
 </body>

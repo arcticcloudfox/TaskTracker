@@ -17,7 +17,7 @@
 
 <section class = "bg-light py-4">
     <div class = "container">
-        <form th:action="@{/}" method = "post">
+        <form th:action="@{/task/add}" method = "post">
             <div class = "mb-3">
                 <label th:for="taskName"> Task Name: </label>
                 <input type = "text" class = "form-control" id = "taskName" name = "taskName" th:field="${task.taskName}">
@@ -28,7 +28,7 @@
             </div>
             <button type="submit" class="btn btn-primary"> Add </button>
         </form>
-        <a href="/" class="btn btn-secondary mt-3"> Back To List </a>
+        <a th:href="@{/task}" class="btn btn-secondary mt-3"> Back To List </a>
     </div>
 </section>
 

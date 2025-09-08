@@ -46,7 +46,6 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLoginForm() {
-        System.out.println("login page works!");
         return "User/login";
     }
 
