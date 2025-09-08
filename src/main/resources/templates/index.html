@@ -26,7 +26,9 @@
             <td th:text="${task.taskName}">Task Name</td>
             <td th:text="${task.description}">Description</td>
             <td>
-                <input type="checkbox" th:checked="${task.completed}" disabled />
+                <form th:action="@{'/task/' + ${task.id} + '/completedTask'}" method="post">
+                    <input type="checkbox" name="completed" th:checked="${task.completed}" onchange="this.form.submit()"/>
+                </form>
             </td>
             <td>
                 <a th:href="@{'/task/' + ${task.id} + '/edit'}" class="btn btn-sm btn-warning">Edit</a>

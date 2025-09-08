@@ -101,6 +101,14 @@ public class TaskController {
         return "edit";
     }
 
+    @PostMapping("/{id}/completedTask")
+    public String toggleCompletedForm(@PathVariable int id, @RequestParam boolean completed) {
+        Task task = taskRepository.findTaskById(id);
+        task.setCompleted(completed);
+        taskRepository.save(task);
+        return "redirect:/task";
+    }
+
     private User getCurrentUser() {
         String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
