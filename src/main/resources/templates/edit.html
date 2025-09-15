@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit</title>
+
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
 </head>
 <body>
+<div class="container">
+    <h1 class="mt-4">Edit Task</h1>
+    <form th:action="@{/update/{id}(id=${task.id})}" method="post" th:object="${task}">
+        <div class="mb-3">
+            <label th:for="taskName">Task Name</label>
+            <input type="text" class="form-control" id="taskName" th:field="*{taskName}"/>
+        </div>
+        <div class="mb-3">
+            <label th:for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}"/>
+            </div>
+        <div class="mb-3">
+            <label th:for="completed">Completed</label>
+            <input type="checkbox" id="completed" th:field="*{completed}"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+    <a th:href="@{/task}" class="btn btn-secondary mt-3"> Back To List </a>
+</div>
 
 </body>
 </html>

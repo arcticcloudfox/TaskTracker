@@ -17,14 +17,14 @@
 
 <section class = "bg-light py-4">
     <div class = "container">
-        <form th:action="@{/task/add}" method = "post">
+        <form th:action="@{/task/add}" method = "post" th:object="${task}">
             <div class = "mb-3">
                 <label th:for="taskName"> Task Name: </label>
-                <input type = "text" class = "form-control" id = "taskName" name = "taskName" th:field="${task.taskName}">
+                <input type = "text" class = "form-control" id = "taskName" th:field="*{taskName}">
             </div>
             <div class = "mb-3">
                 <label th:for="description"> Description: </label>
-                <input type = "text" class = "form-control" id = "description" name = "description" th:field="${task.description}">
+                <input type = "text" class = "form-control" id = "description" th:field="*{description}">
             </div>
             <button type="submit" class="btn btn-primary"> Add </button>
         </form>

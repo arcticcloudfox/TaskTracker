@@ -72,7 +72,7 @@ public class TaskController {
 
         taskRepository.save(task);
 
-        return "view";
+        return "redirect:/task";
     }
 
     //allows user to update existing tasks
