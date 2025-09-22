@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit</title>
-
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
-</head>
+<head th:replace="fragments :: head('Edit Task')"></head>
 <body>
 <div class="container">
     <h1 class="mt-4">Edit Task</h1>
@@ -20,7 +15,7 @@
             </div>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
-    <a th:href="@{/task}" class="btn btn-secondary mt-3"> Back To List </a>
+    <div th:replace="fragments :: back-button"></div>
 </div>
 
 </body>

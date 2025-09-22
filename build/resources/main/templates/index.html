@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Task Tracker</title>
-    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+<head th:replace="fragments :: head('Edit Task')"></head>
 
-</head>
 <body>
 
 <div class="container mt-4">
     <h2> Task Tracker </h2>
 
-    <a th:href="@{/task/add}" class="btn btn-primary mb-3">Add Task</a>
+    <div th:replace="fragments :: add-button"></div>
+
     <table class="table table-striped">
         <thead>
         <tr>

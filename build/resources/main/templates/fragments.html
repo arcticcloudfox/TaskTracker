@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="${title}">Task Manager</title>
+    <link th:href="@{/css/boostrap.css}" rel="stylesheet"/>
 </head>
 <body>
+
+<section th:fragment="header(title)" class="bg-primary text-white py-4">
+    <div class="container">
+        <h1 class="text-center" th:text="${title}">Task Manager</h1>
+    </div>
+</section>
+
+<a th:fragment="back-button" th:href="@{/task}" class="btn btn-secondary mt-3">Back To List</a>
+<a th:fragment="add-button" th:href="@{/task/add}" class="btn btn-primary mb-3">Add Task</a>
 
 </body>
 </html>
